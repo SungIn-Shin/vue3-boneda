@@ -1,18 +1,28 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+  <div>
+    <span v-if="isUserEmpty">
+      어서오세요. 메인 화면입니다. 로그인을 시도하세요.
+    </span>
+    <span v-else> {{ $global.state.userId }} 님의 메인화면입니다.</span>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import { getCurrentInstance } from 'vue';
+import { computed } from 'vue';
 export default {
-  name: "Home",
-  components: {
-    HelloWorld,
+  setup() {
+    const app = getCurrentInstance();
+    const $global = app.appContext.config.globalProperties.$global;
+
+    const isUserEmpty = computed(() => {
+      return $global.state.userId == '' ? true : false;
+    });
+    return {
+      isUserEmpty,
+    };
   },
 };
 </script>
+
+<style></style>
